@@ -1,5 +1,6 @@
 'use strict';
 
+const assert = require('assert');
 const meta = require('../meta');
 const db = require('../database');
 const flags = require('../flags');
@@ -167,7 +168,28 @@ module.exports = function (Posts) {
         }
     }
 
+    // type Vote = {
+    //      user: {
+    //         reputation: number | undefined,
+    //     },
+    //     fromuid: number,
+    //     post: {
+    //          uid:
+    //     },
+    //     upvote: boolean,
+    //     downvote: bolean,
+    // }
+    // vote(type: string, unvote: boolean, pid: string | number, uid: string,
+    //      voteStatus: { upvoted: boolean, downvoted: boolean): Vote
+    // ;
     async function vote(type, unvote, pid, uid, voteStatus) {
+        assert(typeof type === 'string');
+        assert(typeof unvote === 'boolean');
+        assert(typeof pid === 'string' || typeof pid === 'number');
+        assert(typeof uid === 'number');
+        assert(typeof voteStatus.upvoted === 'boolean');
+        assert(typeof voteStatus.downvoted === 'boolean');
+
         uid = parseInt(uid, 10);
         if (uid <= 0) {
             throw new Error('[[error:not-logged-in]]');
@@ -202,6 +224,11 @@ module.exports = function (Posts) {
 
         await fireVoteHook(postData, uid, type, unvote, voteStatus);
 
+        assert(typeof newReputation === 'number' || typeof newReputation === 'undefined');
+        assert(typeof uid === 'number');
+        assert(typeof postData.uid === 'number');
+        assert(typeof (type === 'upvote' && !unvote) === 'boolean');
+        assert(typeof (type === 'downvote' && !unvote) === 'boolean');
         return {
             user: {
                 reputation: newReputation,
