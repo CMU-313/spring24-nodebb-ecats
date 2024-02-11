@@ -75,7 +75,7 @@
 		"text": "Career"
 	},
 	{
-		"route": "/reading-lists",
+		"route": "/lists",
 		"title": "Reading Lists",
 		"enabled": true,
 		"iconClass": "fa-book",
