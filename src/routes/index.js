@@ -93,6 +93,12 @@ _mounts.career = (app, name, middleware, controllers) => {
     setupPageRoute(app, `/${name}`, middlewares, controllers.career.get);
 };
 
+_mounts.lists = (app, name, middleware, controllers) => {
+    const middlewares = [middleware.ensureLoggedIn];
+
+    setupPageRoute(app, `/${name}`, middlewares, controllers.lists.get);
+};
+
 _mounts.users = (app, name, middleware, controllers) => {
     const middlewares = [middleware.canViewUsers];
 
@@ -114,7 +120,7 @@ module.exports = async function (app, middleware) {
     };
 
     // Allow plugins/themes to mount some routes elsewhere
-    const remountable = ['admin', 'category', 'topic', 'post', 'users', 'user', 'groups', 'tags', 'career'];
+    const remountable = ['admin', 'category', 'topic', 'post', 'users', 'user', 'groups', 'tags', 'career', 'lists'];
     const { mounts } = await plugins.hooks.fire('filter:router.add', {
         mounts: remountable.reduce((memo, mount) => {
             memo[mount] = mount;
