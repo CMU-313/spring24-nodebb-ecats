@@ -260,6 +260,8 @@ paths:
     $ref: 'read/category/category_id.yaml'
   /api/career:
     $ref: 'read/career.yaml'
+  /api/lists:
+    $ref: 'read/lists.yaml'
   /api/self:
     $ref: 'read/self.yaml'
   /api/me:
