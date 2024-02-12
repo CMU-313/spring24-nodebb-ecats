@@ -102,7 +102,13 @@ module.exports = function (Topics) {
             throw new Error('[[error:no-category]]');
         }
 
+        const userData = await user.getUserData(uid);
+
         if (!canCreate || (!canTag && data.tags.length)) {
+            throw new Error('[[error:no-privileges]]');
+        }
+
+        if (userData['account-type'] === 'recruiter') {
             throw new Error('[[error:no-privileges]]');
         }
 
