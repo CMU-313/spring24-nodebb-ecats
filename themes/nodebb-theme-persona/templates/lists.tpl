@@ -8,9 +8,9 @@
     <div class="<!-- IF widgets.sidebar.length -->col-lg-9 col-sm-12<!-- ELSE -->col-lg-12<!-- ENDIF widgets.sidebar.length -->">
         <h1>Reading Lists!</h1>
         <p>
-            Welcome to the reading lists page!
+            Welcome to the reading lists page! (This page is still under development.)
         </p>
-        This page is still under development.
+        <!-- IMPORT partials/buttons/newList.tpl -->
     </div>
     <div data-widget-area="sidebar" class="col-lg-3 col-sm-12 <!-- IF !widgets.sidebar.length -->hidden<!-- ENDIF !widgets.sidebar.length -->">
         {{{each widgets.sidebar}}}
