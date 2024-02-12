@@ -73,5 +73,13 @@
 		"iconClass": "fa-briefcase",
 		"textClass": "visible-xs-inline",
 		"text": "Career"
+	},
+	{
+		"route": "/lists",
+		"title": "Reading Lists",
+		"enabled": true,
+		"iconClass": "fa-book",
+		"textClass": "visible-xs-inline",
+		"text": "Reading Lists"
 	}
 ]

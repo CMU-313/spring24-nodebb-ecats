@@ -16,6 +16,7 @@ Controllers.home = require('./home');
 Controllers.topics = require('./topics');
 Controllers.posts = require('./posts');
 Controllers.career = require('./career');
+Controllers.lists = require('./lists');
 Controllers.categories = require('./categories');
 Controllers.category = require('./category');
 Controllers.unread = require('./unread');

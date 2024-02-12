@@ -1,0 +1,8 @@
+get:
+  tags:
+    - lists
+  summary: View reading lists
+  description: Returns saved posts in reading lists
+  responses:
+    "200":
+      description: ""
