@@ -108,7 +108,7 @@ module.exports = function (Topics) {
             throw new Error('[[error:no-privileges]]');
         }
 
-        if (userData['accounttype'] == 'recruiter') {
+        if (userData['account-type'] === 'recruiter') {
             throw new Error('[[error:no-privileges]]');
         }
 
