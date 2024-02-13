@@ -104,7 +104,7 @@
                     <tr>
                         <th align="left">
                             <a href="https://github.com/CMU-313/spring24-nodebb-ecats/issues?q=author%3Aazhang49+type%3Aissue+created%3A2024-01-20T00:00:00-05:00..2024-03-29T23:59:00-05:00">
-                            Issues: 2
+                            Issues: 5
                             </a>
                         </th>
                     <tr>
@@ -167,7 +167,7 @@
                     <tr>
                         <th align="left">
                             <a href="https://github.com/CMU-313/spring24-nodebb-ecats/issues?q=author%3Ap0nk0+type%3Aissue+created%3A2024-01-20T00:00:00-05:00..2024-03-29T23:59:00-05:00">
-                            Issues: 2
+                            Issues: 3
                             </a>
                         </th>
                     <tr>
