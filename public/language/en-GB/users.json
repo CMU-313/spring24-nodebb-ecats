@@ -3,6 +3,8 @@
 	"top_posters": "Top Posters",
 	"most_reputation": "Most Reputation",
 	"most_flags": "Most Flags",
+  "instructors": "Instructors",
+  "students": "Students",
 	"search": "Search",
 	"enter_username": "Enter a username to search",
 	"search-user-for-chat": "Search a user to start chat",
