@@ -21,6 +21,8 @@ usersController.index = async function (req, res, next) {
         'sort-reputation': usersController.getUsersSortedByReputation,
         banned: usersController.getBannedUsers,
         flagged: usersController.getFlaggedUsers,
+        instructors: usersController.getInstructors,
+        students: usersController.getStudents,
     };
 
     if (req.query.query) {
@@ -64,6 +66,16 @@ usersController.getOnlineUsers = async function (req, res) {
     userData.timeagoCutoff = 1000 * 60 * 60 * 24;
 
     await render(req, res, userData);
+};
+
+usersController.getInstructors = async function (req, res) {
+  const userData = await usersController.getUsers('users:instructors', req.uid, req.query);
+  await render(req, res, userData);
+};
+
+usersController.getStudents = async function (req, res) {
+  const userData = await usersController.getUsers('users:students', req.uid, req.query);
+  await render(req, res, userData);
 };
 
 usersController.getUsersSortedByPosts = async function (req, res) {
@@ -110,6 +122,8 @@ usersController.getUsers = async function (set, uid, query) {
         'users:online': { title: '[[pages:users/online]]', crumb: '[[global:online]]' },
         'users:banned': { title: '[[pages:users/banned]]', crumb: '[[user:banned]]' },
         'users:flags': { title: '[[pages:users/most-flags]]', crumb: '[[users:most_flags]]' },
+        'users:instructors': { title: '[[pages:users/instructors]]', crumb: '[[users:instructors]]' },
+        'users:students': { title: '[[pages:users/students]]', crumb: '[[users:students]]' },
     };
 
     if (!setToData[set]) {
