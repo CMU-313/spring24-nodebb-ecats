@@ -69,13 +69,13 @@ usersController.getOnlineUsers = async function (req, res) {
 };
 
 usersController.getInstructors = async function (req, res) {
-  const userData = await usersController.getUsers('users:instructors', req.uid, req.query);
-  await render(req, res, userData);
+    const userData = await usersController.getUsers('users:instructors', req.uid, req.query);
+    await render(req, res, userData);
 };
 
 usersController.getStudents = async function (req, res) {
-  const userData = await usersController.getUsers('users:students', req.uid, req.query);
-  await render(req, res, userData);
+    const userData = await usersController.getUsers('users:students', req.uid, req.query);
+    await render(req, res, userData);
 };
 
 usersController.getUsersSortedByPosts = async function (req, res) {
