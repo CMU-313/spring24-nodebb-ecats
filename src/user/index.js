@@ -59,7 +59,7 @@ User.getUidsFromSet = async function (set, start, stop) {
         const count = parseInt(stop, 10) === -1 ? stop : stop - start + 1;
         const now = Date.now();
         return await db.getSortedSetRevRangeByScore(set, start, count, '+inf', now - (meta.config.onlineCutoff * 60000));
-    } else if (set === 'users:instructors') {
+    } else if (set === 'users:instructors' || set === 'users:students') {
         return db.getSortedSetRevRange('users:joindate', start, stop);
     }
     return await db.getSortedSetRevRange(set, start, stop);
@@ -70,6 +70,8 @@ User.getUsersFromSet = async function (set, uid, start, stop) {
     const userData = await User.getUsers(uids, uid);
     if (set === 'users:instructors') {
         return userData.filter(user => user.accounttype === 'instructor');
+    } else if (set === 'users:students') {
+        return userData.filter(user => user.accounttype === 'student');
     }
     return userData;
 };
