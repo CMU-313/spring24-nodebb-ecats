@@ -1,5 +1,7 @@
 'use strict';
 
+const assert = require('assert');
+
 const zxcvbn = require('zxcvbn');
 const winston = require('winston');
 
@@ -49,12 +51,15 @@ module.exports = function (User) {
         let userData = {
             username: data.username,
             userslug: data.userslug,
-            accounttype: data.accounttype || 'student',
+            accounttype: data.accounttype || 'administrator',
             email: data.email || '',
             joindate: timestamp,
             lastonline: timestamp,
             status: 'online',
         };
+
+        assert(typeof userData.accounttype === 'string');
+
         ['picture', 'fullname', 'location', 'birthday'].forEach((field) => {
             if (data[field]) {
                 userData[field] = data[field];
