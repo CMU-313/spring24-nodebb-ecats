@@ -13,11 +13,11 @@
 
 <!-- IF privileges.resolvable -->
 <li>
-    <a component="topic/mark_resolved" role="menuitem" tabindex="-1" href="#">
-        <span class="menu-icon"><i class="fa fa-fw fa-thumbs-up"></i></span> [[topic:mark_resolved]]
+    <a component="topic/mark_resolved" role="menuitem" title="[[topic:mark_unread]]" tabindex="-1" href="#">
+        <span class="menu-icon"><i class="fa fa-fw fa-check"></i></span> [[topic:mark_resolved]]
     </a>
 </li>
-<!-- IF privileges.resolvable -->
+<!-- ENDIF privileges.resolvable -->
 
 <!-- IF privileges.deletable -->
 <li class="divider"></li>

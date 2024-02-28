@@ -64,6 +64,7 @@
     "markAsUnreadForAll.success": "Topic marked as unread for all.",
     "mark_unread": "Mark unread",
     "mark_unread.success": "Topic marked as unread.",
+    "mark_resolved": "Mark Resolved",
     "watch": "Watch",
     "unwatch": "Unwatch",
     "watch.title": "Be notified of new replies in this topic",

@@ -66,7 +66,7 @@ async function isModeratorOfCategory(cid, uid) {
 
 privsUsers.isInstructor = async function (uid) {
     const userData = await user.getUserData(uid);
-    return userData['accounttype'] === 'instructor';
+    return userData.accounttype === 'instructor';
 };
 
 async function filterIsModerator(cid, uid, isModerator) {
