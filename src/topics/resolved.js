@@ -8,4 +8,12 @@ module.exports = function (Topics) {
         }
         await Topics.setTopicField(tid, 'resolved', 1);
     };
+
+    Topics.markUnresolved = async function (tid) {
+        const exists = await Topics.exists(tid);
+        if (!exists) {
+            throw new Error('[[error:no-topic]]');
+        }
+        await Topics.setTopicField(tid, 'resolved', 0);
+    };
 };

@@ -108,6 +108,16 @@ define('forum/topic/threadTools', [
             return false;
         });
 
+        topicContainer.on('click', '[component="topic/mark_unresolved"]', function () {
+            socket.emit('topics.markUnresolved', [tid], function (err) {
+                if (err) {
+                    return alerts.error(err);
+                }
+                alerts.success('[[topic:mark_unresolved.success]]');
+            });
+            return false;
+        });
+
         topicContainer.on('click', '[component="topic/move"]', function () {
             require(['forum/topic/move'], function (move) {
                 move.init([tid], ajaxify.data.cid);
