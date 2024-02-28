@@ -76,6 +76,7 @@
 	"mark_unread.success": "Topic marked as unread.",
 
 	"mark_resolved": "Mark Resolved",
+	"mark_resolved.success": "Topic marked as resolved.",
 
 	"watch": "Watch",
 	"unwatch": "Unwatch",

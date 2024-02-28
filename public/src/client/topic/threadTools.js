@@ -103,6 +103,7 @@ define('forum/topic/threadTools', [
                 if (err) {
                     return alerts.error(err);
                 }
+                alerts.success('[[topic:mark_resolved.success]]');
             });
             return false;
         });
