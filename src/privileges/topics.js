@@ -22,17 +22,16 @@ privsTopics.get = async function (tid, uid) {
         'posts:delete', 'posts:view_deleted', 'read', 'purge',
     ];
     const topicData = await topics.getTopicFields(tid, ['cid', 'uid', 'locked', 'deleted', 'scheduled']);
-    const [userPrivileges, isAdministrator, isModerator, disabled] = await Promise.all([
+    const [userPrivileges, isAdministrator, isModerator, isInstructor, disabled] = await Promise.all([
         helpers.isAllowedTo(privs, uid, topicData.cid),
         user.isAdministrator(uid),
         user.isModerator(uid, topicData.cid),
+        user.isInstructor(uid),
         categories.getCategoryField(topicData.cid, 'disabled'),
     ]);
     const privData = _.zipObject(privs, userPrivileges);
-    const userData = await user.getUserData(uid);
     const isOwner = uid > 0 && uid === topicData.uid;
     const isAdminOrMod = isAdministrator || isModerator;
-    const isInstructor = userData['accounttype'] === 'instructor';
     const editable = isAdminOrMod;
     const deletable = (privData['topics:delete'] && (isOwner || isModerator)) || isAdministrator;
     const resolvable = isOwner || isInstructor || isModerator || isAdministrator;
