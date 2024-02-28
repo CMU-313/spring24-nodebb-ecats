@@ -29,10 +29,13 @@ privsTopics.get = async function (tid, uid) {
         categories.getCategoryField(topicData.cid, 'disabled'),
     ]);
     const privData = _.zipObject(privs, userPrivileges);
+    const userData = await user.getUserData(uid);
     const isOwner = uid > 0 && uid === topicData.uid;
     const isAdminOrMod = isAdministrator || isModerator;
+    const isInstructor = userData['accounttype'] === 'instructor';
     const editable = isAdminOrMod;
     const deletable = (privData['topics:delete'] && (isOwner || isModerator)) || isAdministrator;
+    const resolvable = isOwner || isInstructor || isModerator || isAdministrator;
     const mayReply = privsTopics.canViewDeletedScheduled(topicData, {}, false, privData['topics:schedule']);
 
     return await plugins.hooks.fire('filter:privileges.topics.get', {
@@ -48,9 +51,10 @@ privsTopics.get = async function (tid, uid) {
         read: privData.read || isAdministrator,
         purge: (privData.purge && (isOwner || isModerator)) || isAdministrator,
 
-        view_thread_tools: editable || deletable,
+        view_thread_tools: editable || deletable || resolvable,
         editable: editable,
         deletable: deletable,
+        resolvable: resolvable,
         view_deleted: isAdminOrMod || isOwner || privData['posts:view_deleted'],
         view_scheduled: privData['topics:schedule'] || isAdministrator,
         isAdminOrMod: isAdminOrMod,
