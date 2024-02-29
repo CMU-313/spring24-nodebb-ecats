@@ -3,6 +3,7 @@
 
 const _ = require('lodash');
 
+const assert = require('assert');
 const user = require('../user');
 const meta = require('../meta');
 const groups = require('../groups');
@@ -64,9 +65,13 @@ async function isModeratorOfCategory(cid, uid) {
     return result ? result[0] : false;
 }
 
+// privsUser.isInstructor(uid: number): boolean
 privsUsers.isInstructor = async function (uid) {
+    assert(typeof uid === 'number');
     const userData = await user.getUserData(uid);
-    return userData.accounttype === 'instructor';
+    const instructor = userData.accounttype === 'instructor';
+    assert(typeof instructor === 'boolean');
+    return instructor;
 };
 
 async function filterIsModerator(cid, uid, isModerator) {
