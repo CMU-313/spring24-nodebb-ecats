@@ -26,6 +26,7 @@ const helpers = require('./helpers');
 
 describe('Post\'s', () => {
     let voterUid;
+    let instructorVoterUid;
     let voteeUid;
     let globalModUid;
     let postData;
@@ -36,6 +37,9 @@ describe('Post\'s', () => {
         async.series({
             voterUid: function (next) {
                 user.create({ username: 'upvoter' }, next);
+            },
+            instructorVoterUid: function (next) {
+                user.create({ username: 'upvoter', accounttype: 'instructor' }, next);
             },
             voteeUid: function (next) {
                 user.create({ username: 'upvotee' }, next);
@@ -55,6 +59,7 @@ describe('Post\'s', () => {
             }
 
             voterUid = results.voterUid;
+            instructorVoterUid = results.instructorVoterUid;
             voteeUid = results.voteeUid;
             globalModUid = results.globalModUid;
             cid = results.category.cid;
@@ -189,6 +194,15 @@ describe('Post\'s', () => {
             const data = await posts.hasVoted(postData.pid, voterUid);
             assert.equal(data.upvoted, true);
             assert.equal(data.downvoted, false);
+
+            const instructorResult = await apiPosts.upvote({ uid: instructorVoterUid }, { pid: postData.pid, room_id: 'topic_1' });
+            assert.equal(instructorResult.post.upvotes, 2);
+            assert.equal(instructorResult.post.downvotes, 0);
+            assert.equal(instructorResult.post.votes, 2);
+            assert.equal(instructorResult.user.reputation, 3);
+            const instructorData = await posts.hasVoted(postData.pid, instructorVoterUid);
+            assert.equal(instructorData.upvoted, true);
+            assert.equal(instructorData.downvoted, false);
         });
 
         it('should add the pid to the :votes sorted set for that user', async () => {
@@ -196,13 +210,13 @@ describe('Post\'s', () => {
             const { uid, pid } = postData;
 
             const score = await db.sortedSetScore(`cid:${cid}:uid:${uid}:pids:votes`, pid);
-            assert.strictEqual(score, 1);
+            assert.strictEqual(score, 2);
         });
 
         it('should get voters', (done) => {
             socketPosts.getVoters({ uid: globalModUid }, { pid: postData.pid, cid: cid }, (err, data) => {
                 assert.ifError(err);
-                assert.equal(data.upvoteCount, 1);
+                assert.equal(data.upvoteCount, 2);
                 assert.equal(data.downvoteCount, 0);
                 assert(Array.isArray(data.upvoters));
                 assert.equal(data.upvoters[0].username, 'upvoter');
@@ -214,20 +228,29 @@ describe('Post\'s', () => {
             socketPosts.getUpvoters({ uid: globalModUid }, [postData.pid], (err, data) => {
                 assert.ifError(err);
                 assert.equal(data[0].otherCount, 0);
-                assert.equal(data[0].usernames, 'upvoter');
+                assert.equal(data[0].usernames[0], 'upvoter');
                 done();
             });
         });
 
         it('should unvote a post', async () => {
             const result = await apiPosts.unvote({ uid: voterUid }, { pid: postData.pid, room_id: 'topic_1' });
-            assert.equal(result.post.upvotes, 0);
+            assert.equal(result.post.upvotes, 1);
             assert.equal(result.post.downvotes, 0);
-            assert.equal(result.post.votes, 0);
-            assert.equal(result.user.reputation, 0);
+            assert.equal(result.post.votes, 1);
+            assert.equal(result.user.reputation, 2);
             const data = await posts.hasVoted(postData.pid, voterUid);
             assert.equal(data.upvoted, false);
             assert.equal(data.downvoted, false);
+
+            const instructorResult = await apiPosts.unvote({ uid: instructorVoterUid }, { pid: postData.pid, room_id: 'topic_1' });
+            assert.equal(instructorResult.post.upvotes, 0);
+            assert.equal(instructorResult.post.downvotes, 0);
+            assert.equal(instructorResult.post.votes, 0);
+            assert.equal(instructorResult.user.reputation, 0);
+            const instructorData = await posts.hasVoted(postData.pid, instructorVoterUid);
+            assert.equal(instructorData.upvoted, false);
+            assert.equal(instructorData.downvoted, false);
         });
 
         it('should downvote a post', async () => {
@@ -239,6 +262,15 @@ describe('Post\'s', () => {
             const data = await posts.hasVoted(postData.pid, voterUid);
             assert.equal(data.upvoted, false);
             assert.equal(data.downvoted, true);
+
+            const instructorResult = await apiPosts.downvote({ uid: instructorVoterUid }, { pid: postData.pid, room_id: 'topic_1' });
+            assert.equal(instructorResult.post.upvotes, 0);
+            assert.equal(instructorResult.post.downvotes, 2);
+            assert.equal(instructorResult.post.votes, -2);
+            assert.equal(instructorResult.user.reputation, -3);
+            const instructorData = await posts.hasVoted(postData.pid, instructorVoterUid);
+            assert.equal(instructorData.upvoted, false);
+            assert.equal(instructorData.downvoted, true);
         });
 
         it('should add the pid to the :votes sorted set for that user', async () => {
@@ -246,7 +278,7 @@ describe('Post\'s', () => {
             const { uid, pid } = postData;
 
             const score = await db.sortedSetScore(`cid:${cid}:uid:${uid}:pids:votes`, pid);
-            assert.strictEqual(score, -1);
+            assert.strictEqual(score, -2);
         });
 
         it('should prevent downvoting more than total daily limit', async () => {
