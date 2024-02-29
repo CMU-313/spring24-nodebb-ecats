@@ -43,6 +43,18 @@
             <span><a class="formatted-number" href="{config.relative_path}/flags?targetUid={users.uid}">{users.flags}</a></span>
         </div>
         <!-- ENDIF section_flagged -->
+
+        <!-- IF section_instructors -->
+        <div class="lastonline">
+            <span class="timeago" title="{users.lastonlineISO}"></span>
+        </div>
+        <!-- ENDIF section_instructors -->
+
+        <!-- IF section_students -->
+        <div class="lastonline">
+            <span class="timeago" title="{users.lastonlineISO}"></span>
+        </div>
+        <!-- ENDIF section_students -->
     </div>
 </li>
 {{{end}}}

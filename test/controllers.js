@@ -892,6 +892,24 @@ describe('Controllers', () => {
         });
     });
 
+    it('should load users/instructors page', (done) => {
+        request(`${nconf.get('url')}/users?section=instructors`, (err, res, body) => {
+            assert.ifError(err);
+            assert.equal(res.statusCode, 200);
+            assert(body);
+            done();
+        });
+    });
+
+    it('should load users/students page', (done) => {
+        request(`${nconf.get('url')}/users?section=students`, (err, res, body) => {
+            assert.ifError(err);
+            assert.equal(res.statusCode, 200);
+            assert(body);
+            done();
+        });
+    });
+
     it('should error if guests do not have search privilege', (done) => {
         request(`${nconf.get('url')}/api/users?query=bar&section=sort-posts`, { json: true }, (err, res, body) => {
             assert.ifError(err);
