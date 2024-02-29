@@ -38,12 +38,19 @@
                 <i component="topic/moved" class="fa fa-arrow-circle-right <!-- IF !topics.oldCid -->hide<!-- ENDIF !topics.oldCid -->" title="[[topic:moved]]"></i>
                 {{{each topics.icons}}}{@value}{{{end}}}
 
-
+                <!-- IF !topics.resolved-->
                 <!-- IF !topics.noAnchor -->
-                <a href="{config.relative_path}/topic/{topics.slug}<!-- IF topics.bookmark -->/{topics.bookmark}<!-- ENDIF topics.bookmark -->">{topics.title}</a><br />
+                <a style="color:red" href="{config.relative_path}/topic/{topics.slug}<!-- IF topics.bookmark -->/{topics.bookmark}<!-- ENDIF topics.bookmark -->">{topics.title}</a><br />
                 <!-- ELSE -->
-                <span>{topics.title}</span><br />
+                <span style="color:red" >{topics.title}</span><br />
                 <!-- ENDIF !topics.noAnchor -->
+                <!-- ELSE -->
+                <!-- IF !topics.noAnchor -->
+                <a style="color:green" href="{config.relative_path}/topic/{topics.slug}<!-- IF topics.bookmark -->/{topics.bookmark}<!-- ENDIF topics.bookmark -->">{topics.title}</a><br />
+                <!-- ELSE -->
+                <span style="color:green" >{topics.title}</span><br />
+                <!-- ENDIF !topics.noAnchor -->
+                <!-- ENDIF !topics.resolved-->
 
                 <!-- IF !template.category -->
                 <small>
