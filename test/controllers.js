@@ -1200,6 +1200,16 @@ describe('Controllers', () => {
         });
     });
 
+    describe('lists', () => {
+        it('should render lists page', (done) => {
+            request(`${nconf.get('url')}/lists`, { json: true }, (err, res, body) => {
+                assert.ifError(err);
+                assert.equal(res.statusCode, 200);
+                assert(body);
+                done();
+            });
+        });
+    });
 
     describe('maintenance mode', () => {
         before((done) => {
