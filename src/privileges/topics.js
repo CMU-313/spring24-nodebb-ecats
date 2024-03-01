@@ -22,10 +22,11 @@ privsTopics.get = async function (tid, uid) {
         'posts:delete', 'posts:view_deleted', 'read', 'purge',
     ];
     const topicData = await topics.getTopicFields(tid, ['cid', 'uid', 'locked', 'deleted', 'scheduled']);
-    const [userPrivileges, isAdministrator, isModerator, disabled] = await Promise.all([
+    const [userPrivileges, isAdministrator, isModerator, isInstructor, disabled] = await Promise.all([
         helpers.isAllowedTo(privs, uid, topicData.cid),
         user.isAdministrator(uid),
         user.isModerator(uid, topicData.cid),
+        user.isInstructor(uid),
         categories.getCategoryField(topicData.cid, 'disabled'),
     ]);
     const privData = _.zipObject(privs, userPrivileges);
@@ -33,6 +34,7 @@ privsTopics.get = async function (tid, uid) {
     const isAdminOrMod = isAdministrator || isModerator;
     const editable = isAdminOrMod;
     const deletable = (privData['topics:delete'] && (isOwner || isModerator)) || isAdministrator;
+    const resolvable = isOwner || isInstructor || isAdministrator;
     const mayReply = privsTopics.canViewDeletedScheduled(topicData, {}, false, privData['topics:schedule']);
 
     return await plugins.hooks.fire('filter:privileges.topics.get', {
@@ -48,9 +50,10 @@ privsTopics.get = async function (tid, uid) {
         read: privData.read || isAdministrator,
         purge: (privData.purge && (isOwner || isModerator)) || isAdministrator,
 
-        view_thread_tools: editable || deletable,
+        view_thread_tools: editable || deletable || resolvable,
         editable: editable,
         deletable: deletable,
+        resolvable: resolvable,
         view_deleted: isAdminOrMod || isOwner || privData['posts:view_deleted'],
         view_scheduled: privData['topics:schedule'] || isAdministrator,
         isAdminOrMod: isAdminOrMod,

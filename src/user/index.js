@@ -2,6 +2,7 @@
 
 const _ = require('lodash');
 
+const assert = require('assert');
 const groups = require('../groups');
 const plugins = require('../plugins');
 const db = require('../database');
@@ -159,6 +160,14 @@ User.isAdministrator = async function (uid) {
 
 User.isGlobalModerator = async function (uid) {
     return await privileges.users.isGlobalModerator(uid);
+};
+
+// User.isInstructor(uid: number): boolean
+User.isInstructor = async function (uid) {
+    assert(typeof uid === 'number');
+    const instructor = await privileges.users.isInstructor(uid);
+    assert(typeof instructor === 'boolean');
+    return instructor;
 };
 
 User.getPrivileges = async function (uid) {

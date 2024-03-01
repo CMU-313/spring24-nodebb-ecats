@@ -19,6 +19,7 @@ require('./topics/tools')(SocketTopics);
 require('./topics/infinitescroll')(SocketTopics);
 require('./topics/tags')(SocketTopics);
 require('./topics/merge')(SocketTopics);
+require('./topics/resolved')(SocketTopics);
 
 SocketTopics.postcount = async function (socket, tid) {
     const canRead = await privileges.topics.can('topics:read', tid, socket.uid);

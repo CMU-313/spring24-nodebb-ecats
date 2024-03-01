@@ -33,13 +33,17 @@ describe('Topic\'s', () => {
     let topic;
     let categoryObj;
     let adminUid;
+    let instructorUid;
     let adminJar;
     let csrf_token;
     let fooUid;
+    let booUid;
 
     before(async () => {
         adminUid = await User.create({ username: 'admin', password: '123456' });
+        instructorUid = await User.create({ username: 'instructor', accounttype: 'instructor' });
         fooUid = await User.create({ username: 'foo' });
+        booUid = await User.create({ username: 'boo' });
         await groups.join('administrators', adminUid);
         const adminLogin = await helpers.loginUser('admin', '123456');
         adminJar = adminLogin.jar;
@@ -243,6 +247,137 @@ describe('Topic\'s', () => {
             meta.config.allowGuestHandles = oldValue;
         });
     });
+
+    describe('Marking resolved and unresolved', () => {
+        let resolveTopic;
+        let resolvePost;
+
+        before((done) => {
+            topics.post({
+                uid: booUid,
+                title: topic.title,
+                content: topic.content,
+                cid: topic.categoryId,
+            }, (err, result) => {
+                if (err) {
+                    return done(err);
+                }
+
+                resolveTopic = result.topicData;
+                resolvePost = result.postData;
+                done();
+            });
+        });
+
+        it('should error with invalid data (uid) (resolved)', (done) => {
+            socketTopics.markResolved({ uid: 0 }, resolveTopic.tid, (err) => {
+                assert.equal(err.message, '[[error:invalid-data]]');
+                done();
+            });
+        });
+
+        it('should error with invalid data (tid) (resolved)', (done) => {
+            socketTopics.markResolved({ uid: fooUid }, null, (err) => {
+                assert.equal(err.message, '[[error:invalid-data]]');
+                done();
+            });
+        });
+
+        it('should error with invalid data (uid) (unresolved)', (done) => {
+            socketTopics.markUnresolved({ uid: 0 }, resolveTopic.tid, (err) => {
+                assert.equal(err.message, '[[error:invalid-data]]');
+                done();
+            });
+        });
+
+        it('should error with invalid data (tid) (unresolved)', (done) => {
+            socketTopics.markUnresolved({ uid: fooUid }, null, (err) => {
+                assert.equal(err.message, '[[error:invalid-data]]');
+                done();
+            });
+        });
+
+        it('should error if user is not owner, admin, or instructor (resolved)', (done) => {
+            socketTopics.markResolved({ uid: fooUid }, resolveTopic.tid, (err) => {
+                assert.equal(err.message, '[[error:no-privileges]]');
+                done();
+            });
+        });
+
+        it('should error if user is not owner, admin, or instructor (unresolved)', (done) => {
+            socketTopics.markUnresolved({ uid: fooUid }, resolveTopic.tid, (err) => {
+                assert.equal(err.message, '[[error:no-privileges]]');
+                done();
+            });
+        });
+
+        it('should mark as resolved for instructor', (done) => {
+            socketTopics.markResolved({ uid: instructorUid }, resolveTopic.tid, (err) => {
+                assert.equal(err, null);
+                topics.getTopicField(resolveTopic.tid, 'resolved', (err, resolved) => {
+                    assert.ifError(err);
+                    assert.equal(resolved, 1);
+                    done();
+                });
+            });
+        });
+
+        it('should mark as unresolved for instructor', (done) => {
+            socketTopics.markUnresolved({ uid: instructorUid }, resolveTopic.tid, (err) => {
+                assert.equal(err, null);
+                topics.getTopicField(resolveTopic.tid, 'resolved', (err, resolved) => {
+                    assert.ifError(err);
+                    assert.equal(resolved, 0);
+                    done();
+                });
+            });
+        });
+
+        it('should mark as resolved for admin', (done) => {
+            socketTopics.markResolved({ uid: adminUid }, resolveTopic.tid, (err) => {
+                assert.equal(err, null);
+                topics.getTopicField(resolveTopic.tid, 'resolved', (err, resolved) => {
+                    assert.ifError(err);
+                    assert.equal(resolved, 1);
+                    done();
+                });
+            });
+        });
+
+        it('should mark as unresolved for admin', (done) => {
+            socketTopics.markUnresolved({ uid: adminUid }, resolveTopic.tid, (err) => {
+                assert.equal(err, null);
+                topics.getTopicField(resolveTopic.tid, 'resolved', (err, resolved) => {
+                    assert.ifError(err);
+                    assert.equal(resolved, 0);
+                    done();
+                });
+            });
+        });
+
+        it('should mark as resolved for owner', (done) => {
+            socketTopics.markResolved({ uid: booUid }, resolveTopic.tid, (err) => {
+                assert.equal(err, null);
+                topics.getTopicField(resolveTopic.tid, 'resolved', (err, resolved) => {
+                    assert.ifError(err);
+                    assert.equal(resolved, 1);
+                    done();
+                });
+            });
+        });
+
+        it('should mark as unresolved for owner', (done) => {
+            socketTopics.markUnresolved({ uid: booUid }, resolveTopic.tid, (err) => {
+                assert.equal(err, null);
+                topics.getTopicField(resolveTopic.tid, 'resolved', (err, resolved) => {
+                    assert.ifError(err);
+                    assert.equal(resolved, 0);
+                    done();
+                });
+            });
+        });
+    });
+
 
     describe('.reply', () => {
         let newTopic;

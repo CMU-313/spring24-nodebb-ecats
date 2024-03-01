@@ -1,3 +1,9 @@
+<div class="inline-block">
+<!-- IF resolved -->
+<span class="visible-sm-inline visible-md-inline visible-lg-inline"><p style="color:green">&nbsp; Resolved </span><i class="fa fa-fw fa-check"></i>
+<!-- ENDIF resolved -->
+</div>
+
 <div class="topic-main-buttons pull-right inline-block">
     <span class="loading-indicator btn pull-left hidden" done="0">
         <span class="hidden-xs">[[topic:loading_more_posts]]</span> <i class="fa fa-refresh fa-spin"></i>
