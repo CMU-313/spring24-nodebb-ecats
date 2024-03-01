@@ -142,6 +142,58 @@ describe('authentication', () => {
         });
     });
 
+    it('should register and login a recruiter', (done) => {
+        request({
+            url: `${nconf.get('url')}/api/config`,
+            json: true,
+            jar: jar,
+        }, (err, response, body) => {
+            assert.ifError(err);
+
+            request.post(`${nconf.get('url')}/register`, {
+                form: {
+                    email: 'admin@nodebb.org',
+                    username: 'admin',
+                    password: 'adminpwd',
+                    'password-confirm': 'adminpwd',
+                    'account-type': 'recruiter',
+                    userLang: 'it',
+                    gdpr_consent: true,
+                },
+                json: true,
+                jar: jar,
+                headers: {
+                    'x-csrf-token': body.csrf_token,
+                },
+            }, async (err, response, body) => {
+                // const validationPending = await user.email.isValidationPending(body.uid, 'admin@nodebb.org');
+                // assert.strictEqual(validationPending, true);
+                // assert.ifError(err);
+                const accountType = await user.getUserField(body.uid, 'accounttype');
+                assert(accountType === 'recruiter');
+                assert.ifError(err);
+                assert(body);
+                assert(body.hasOwnProperty('uid') && body.uid > 0);
+                const newUid = body.uid;
+                request({
+                    url: `${nconf.get('url')}/api/self`,
+                    json: true,
+                    jar: jar,
+                }, (err, response, body) => {
+                    assert.ifError(err);
+                    assert(body);
+                    // assert.equal(body.username, 'admin');
+                    // assert.equal(body.uid, newUid);
+                    user.getSettings(body.uid, (err, settings) => {
+                        assert.ifError(err);
+                        assert.equal(settings.userLang, 'it');
+                        done();
+                    });
+                });
+            });
+        });
+    });
+
     it('should logout a user', (done) => {
         helpers.logoutUser(jar, (err) => {
             assert.ifError(err);
