@@ -11,6 +11,8 @@
             Welcome to the reading lists page! (This page is still under development.)
         </p>
         <!-- IMPORT partials/buttons/newList.tpl -->
+
+        <!-- IMPORT partials/buttons/deleteList.tpl -->
     </div>
     <div data-widget-area="sidebar" class="col-lg-3 col-sm-12 <!-- IF !widgets.sidebar.length -->hidden<!-- ENDIF !widgets.sidebar.length -->">
         {{{each widgets.sidebar}}}
