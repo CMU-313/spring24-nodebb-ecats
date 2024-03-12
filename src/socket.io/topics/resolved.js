@@ -5,10 +5,10 @@ const topics = require('../../topics');
 const user = require('../../user');
 
 module.exports = function (SocketTopics) {
-    // checkResolvedPrivileges(uid: number, tid: number): boolean
+    // checkResolvedPrivileges(uid: number, tid: object | number): boolean
     async function checkResolvedPrivileges(uid, tid) {
         assert(typeof uid === 'number');
-        assert(typeof tid === 'number');
+        assert(typeof tid === 'object' || typeof tid === 'number');
         const topicData = await topics.getTopicFields(tid, ['uid']);
         const isAdmin = await user.isAdministrator(uid);
         const isInstructor = await user.isInstructor(uid);

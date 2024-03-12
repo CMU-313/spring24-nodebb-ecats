@@ -75,11 +75,6 @@
 	"mark_unread": "Mark unread",
 	"mark_unread.success": "Topic marked as unread.",
 
-	"mark_resolved": "Mark Resolved",
-	"mark_resolved.success": "Topic marked as resolved.",
-	"mark_unresolved": "Mark Unresolved",
-	"mark_unresolved.success": "Topic marked as unresolved.",
-
 	"watch": "Watch",
 	"unwatch": "Unwatch",
 	"watch.title": "Be notified of new replies in this topic",
@@ -104,8 +99,6 @@
 	"thread_tools.change_owner": "Change Owner",
 	"thread_tools.select_category": "Select Category",
 	"thread_tools.fork": "Fork Topic",
-	"thread_tools.mark_resolved": "Mark Resolved",
-	"thread_tools.mark_unresolved": "Mark Unresolved",
 	"thread_tools.delete": "Delete Topic",
 	"thread_tools.delete-posts": "Delete Posts",
 	"thread_tools.delete_confirm": "Are you sure you want to delete this topic?",
