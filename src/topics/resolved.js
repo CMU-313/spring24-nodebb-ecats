@@ -3,9 +3,9 @@
 const assert = require('assert');
 
 module.exports = function (Topics) {
-    // Topics.markResolved(tid: number): void
+    // Topics.markResolved(tid: object | number): void
     Topics.markResolved = async function (tid) {
-        assert(typeof tid === 'number');
+        assert(typeof tid === 'object' || typeof tid === 'number');
         const exists = await Topics.exists(tid);
         if (!exists) {
             throw new Error('[[error:no-topic]]');
@@ -13,9 +13,9 @@ module.exports = function (Topics) {
         await Topics.setTopicField(tid, 'resolved', 1);
     };
 
-    // Topics.markUnesolved(tid: number): void
+    // Topics.markUnesolved(tid: object | number): void
     Topics.markUnresolved = async function (tid) {
-        assert(typeof tid === 'number');
+        assert(typeof tid === 'object' || typeof tid === 'number');
         const exists = await Topics.exists(tid);
         if (!exists) {
             throw new Error('[[error:no-topic]]');

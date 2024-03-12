@@ -103,7 +103,7 @@ define('forum/topic/threadTools', [
                 if (err) {
                     return alerts.error(err);
                 }
-                alerts.success('[[topic:mark_resolved.success]]');
+                alerts.success('Topic marked as resolved.');
             });
             return false;
         });
@@ -113,7 +113,7 @@ define('forum/topic/threadTools', [
                 if (err) {
                     return alerts.error(err);
                 }
-                alerts.success('[[topic:mark_unresolved.success]]');
+                alerts.success('Topic marked as unresolved.');
             });
             return false;
         });

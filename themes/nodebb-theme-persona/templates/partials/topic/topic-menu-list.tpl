@@ -14,14 +14,14 @@
 <!-- IF privileges.resolvable -->
 <!-- IF !resolved -->
 <li>
-    <a component="topic/mark_resolved" role="menuitem" title="[[topic:thread_tools.mark_resolved]]" tabindex="-1" href="#">
-        <span class="menu-icon"><i class="fa fa-fw fa-check"></i></span> [[topic:mark_resolved]]
+    <a component="topic/mark_resolved" role="menuitem" title="Mark Resolved" tabindex="-1" href="#">
+        <span class="menu-icon"><i class="fa fa-fw fa-check"></i></span> Mark Resolved
     </a>
 </li>
 <!-- ELSE -->
 <li>
-    <a component="topic/mark_unresolved" role="menuitem" title="[[topic:thread_tools.mark_unresolved]]" tabindex="-1" href="#">
-        <span class="menu-icon"><i class="fa fa-fw fa-times"></i></span> [[topic:mark_unresolved]]
+    <a component="topic/mark_unresolved" role="menuitem" title="Mark Unresolved" tabindex="-1" href="#">
+        <span class="menu-icon"><i class="fa fa-fw fa-times"></i></span> Mark Unresolved
     </a>
 </li>
 <!-- ENDIF !resolved -->
