@@ -98,7 +98,8 @@ prestart.versionCheck();
 
 if (!configExists && process.argv[2] !== 'setup') {
     require('./setup').webInstall();
-    // return;
+    /* This return is illegal because this code is outside of a function */
+    // return; 
 }
 
 process.env.CONFIG = configFile;

@@ -44,6 +44,9 @@ describe('minifier', () => {
 
             assert(file.existsSync(destPath));
 
+            /* This test causes Stryker to fail because Stryker adds 
+            @ts-nocheck flags to the code, so the strings are no longer 
+            strictly equal */
             // assert.strictEqual(
             //     fs.readFileSync(destPath).toString().replace(/\r\n/g, '\n'),
             //     '(function (window, document) {' +
