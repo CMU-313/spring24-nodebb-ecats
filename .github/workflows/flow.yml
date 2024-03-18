@@ -5,6 +5,7 @@ on:
 
 jobs:
   flow-test:
+    name: Flow
     runs-on: ${{ matrix.os }}
     steps:
       - run: npm run flow check --all
