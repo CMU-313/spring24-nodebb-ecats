@@ -1,0 +1,10 @@
+name: "flow"
+
+on:
+  pull_request:
+
+jobs:
+  flow-test:
+    runs-on: ${{ matrix.os }}
+    steps:
+      - run: npm run flow check --all
