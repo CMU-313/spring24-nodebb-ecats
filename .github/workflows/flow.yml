@@ -6,6 +6,6 @@ on:
 jobs:
   flow-test:
     name: Flow
-    runs-on: ${{ matrix.os }}
+    runs-on: [ubuntu-latest]
     steps:
       - run: npm run flow check --all
