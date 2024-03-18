@@ -6,6 +6,13 @@ on:
 jobs:
   flow-test:
     name: Flow
-    runs-on: [ubuntu-latest]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        node: [16]
+    runs-on: ${{ matrix.os }}
+    env:
+      TEST_ENV: ${{ matrix.test_env || 'production' }}
     steps:
       - run: npm run flow check --all
