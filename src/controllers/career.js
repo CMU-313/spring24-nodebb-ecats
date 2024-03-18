@@ -1,3 +1,5 @@
+// @flow
+
 'use strict';
 
 const careerController = module.exports;
