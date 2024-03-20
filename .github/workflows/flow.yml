@@ -3,9 +3,19 @@ name: "flow"
 on:
   pull_request:
 
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: read
+
 jobs:
   flow-test:
     name: Flow
+    permissions:
+      checks: write
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -15,5 +25,7 @@ jobs:
     env:
       TEST_ENV: ${{ matrix.test_env || 'production' }}
     steps:
+      - uses: actions/checkout@v3
       - run: cp install/package.json package.json
+      - uses: bahmutov/npm-install@v1
       - run: npm run flow check --all
