@@ -33,4 +33,5 @@ jobs:
       - uses: bahmutov/npm-install@v1
         with:
           useLockFile: false
+      - run: npm run flow init
       - run: npm run flow check --all
