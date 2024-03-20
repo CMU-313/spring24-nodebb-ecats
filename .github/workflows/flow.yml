@@ -15,4 +15,5 @@ jobs:
     env:
       TEST_ENV: ${{ matrix.test_env || 'production' }}
     steps:
+      - run: cp install/package.json package.json
       - run: npm run flow check --all
